@@ -77,7 +77,20 @@
 -- select ContactName
 -- from shop.suppliers
 -- where ContactName like '%S' and (Country = 'Spain' or Country = 'USA');
+
+-- select CustomerName as CompanyName
+-- from shop.customers
+-- where ContactName like '%S'
+-- and (Country = 'Spain' or Country = 'USA');
+
+SELECT CustomerName AS CompanyName FROM customers
+WHERE ContactName LIKE '%S'
+AND (Country = 'Spain' or Country = 'USA');
+
 -- &&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+
 
 -- select OrderID, OrderDate, EmployeeID 
 -- from shop.orders
@@ -143,9 +156,11 @@
 -- select * from shop.products 
 
 -- select * from shop.products
--- where Unit like '%g' or Unit = 'kg'
--- and SupplierID between 5 and 10
--- and CategoryID between 5 and 10;
+-- -- where Unit like '%g' or Unit like '%kg'
+-- where SupplierID between 5 and 10 and CategoryID between 5 and 10;
+
+-- select * from shop.products
+-- were
 -- &&&&&&&&&&&&&&&&&&&&&&&&&&
 
 -- select * from shop.products
