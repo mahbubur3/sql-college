@@ -123,6 +123,7 @@
 -- &&&&&&&&&&&&&&&&&&&&&&&&&&
 
 
+-- &&&&&&&&&&&&&&&&&&&&&&&&&&
 -- select * from shop.products
 
 -- select * from shop.products
@@ -134,9 +135,22 @@
 -- where Unit in ('g', 'kg')
 -- and SupplierID between 5 and 10
 -- and CategoryID between 5 and 10;
+-- and CategoryID between 5 and 10;
 
-SELECT *
-FROM shop.products
-WHERE Unit IN ('g', 'kg')
-AND SupplierID IN (5, 6, 7, 8, 9, 10)
-AND CategoryID IN (5, 6, 7, 8, 9, 10);
+-- select * from shop.products 
+
+-- select * from shop.products
+-- where Unit like '%g' or Unit = 'kg'
+-- and SupplierID between 5 and 10
+-- and CategoryID between 5 and 10;
+-- &&&&&&&&&&&&&&&&&&&&&&&&&&
+
+-- select * from shop.products
+-- where Price between 20 and 40
+-- and CategoryID in (2, 4, 6)
+-- or ProductName like 'A%'
+
+-- SELECT * FROM products
+-- WHERE (Price BETWEEN 20 AND 40)
+-- AND (CategoryID IN (2, 4, 6)
+-- OR ProductName LIKE 'A%');
