@@ -112,15 +112,18 @@
 -- AND Quantity IN (10, 20, 30, 40)
 -- ORDER BY Quantity DESC;
 
+
 -- select * from shop.suppliers
 
--- &&&&&&&&&&&&&&&&&&&&&&&&&&
 -- select * from shop.suppliers
 -- where Phone like '%(___)__-__%';
 
 -- select * from shop.suppliers
--- where Phone like '%([0-9][0-9])%-%';
--- &&&&&&&&&&&&&&&&&&&&&&&&&&
+-- where Phone like '%(__)____-__%';
+
+-- SELECT * FROM suppliers
+-- WHERE Phone LIKE '%(__)____-__%';
+
 
 
 -- &&&&&&&&&&&&&&&&&&&&&&&&&&
