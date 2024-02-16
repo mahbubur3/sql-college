@@ -6,7 +6,7 @@
 -- select * from shop.customers
 -- where CustomerName like 'B%' and CustomerID < 10;
 
--- --#---#-#-#---#--#--#---#---#--#--#-#----#-----
+-- --#---#-#-#---#--#--#---#
 
 -- select * from shop.customers;
 
@@ -73,7 +73,7 @@
 -- WHERE City LIKE '%N'
 -- ORDER BY City DESC;
 
--- &&&&&&&&&&&&&&&&&&&&&&&&&&
+
 -- select ContactName
 -- from shop.suppliers
 -- where ContactName like '%S' and (Country = 'Spain' or Country = 'USA');
@@ -86,10 +86,6 @@
 -- SELECT CustomerName AS CompanyName FROM customers
 -- WHERE ContactName LIKE '%S'
 -- AND (Country = 'Spain' or Country = 'USA');
-
--- &&&&&&&&&&&&&&&&&&&&&&&&&&
-
-
 
 
 -- select OrderID, OrderDate, EmployeeID 
