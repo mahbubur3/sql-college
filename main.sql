@@ -83,9 +83,9 @@
 -- where ContactName like '%S'
 -- and (Country = 'Spain' or Country = 'USA');
 
-SELECT CustomerName AS CompanyName FROM customers
-WHERE ContactName LIKE '%S'
-AND (Country = 'Spain' or Country = 'USA');
+-- SELECT CustomerName AS CompanyName FROM customers
+-- WHERE ContactName LIKE '%S'
+-- AND (Country = 'Spain' or Country = 'USA');
 
 -- &&&&&&&&&&&&&&&&&&&&&&&&&&
 
@@ -138,31 +138,6 @@ AND (Country = 'Spain' or Country = 'USA');
 -- WHERE Phone LIKE '%(__)____-__%';
 
 
-
--- &&&&&&&&&&&&&&&&&&&&&&&&&&
--- select * from shop.products
-
--- select * from shop.products
--- where (Unit = 'g' or Unit = 'kg')
--- and SupplierID between 5 and 10
--- and CategoryID between 5 and 10;
-
--- select * from shop.products
--- where Unit in ('g', 'kg')
--- and SupplierID between 5 and 10
--- and CategoryID between 5 and 10;
--- and CategoryID between 5 and 10;
-
--- select * from shop.products 
-
--- select * from shop.products
--- -- where Unit like '%g' or Unit like '%kg'
--- where SupplierID between 5 and 10 and CategoryID between 5 and 10;
-
--- select * from shop.products
--- were
--- &&&&&&&&&&&&&&&&&&&&&&&&&&
-
 -- select * from shop.products
 -- where Price between 20 and 40
 -- and CategoryID in (2, 4, 6)
@@ -172,3 +147,16 @@ AND (Country = 'Spain' or Country = 'USA');
 -- WHERE (Price BETWEEN 20 AND 40)
 -- AND (CategoryID IN (2, 4, 6)
 -- OR ProductName LIKE 'A%');
+
+
+-- select * from shop.products
+
+-- select * from shop.products
+-- where (Unit like '% g %' or Unit like '% kg %')
+-- and (SupplierID between 5 and 10)
+-- and (CategoryID between 5 and 10);
+
+SELECT * FROM shop.products
+WHERE (Unit LIKE '% g %' OR Unit LIKE '% kg %')
+AND (SupplierID BETWEEN 5 AND 10)
+AND (CategoryID BETWEEN 5 AND 10);
