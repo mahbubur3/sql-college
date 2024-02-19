@@ -162,10 +162,71 @@
 -- FROM shop.orders
 -- WHERE EmployeeID IS NULL;
 
--- exercise 2 ------------------------------------------------------------------------------------------------------
+-- exercise 2 practice ------------------------------------------------------------------------------------------------------
+
+-- select avg(price) as average_price
+-- from shop.products
+
+-- select sum(price) as sum_price
+-- from shop.products
+
+-- select min(price) as min_price, max(price) as max_price
+-- from shop.products
+
+-- select count(*)
+-- from shop.products
+-- where Price > 100;
+
+-- select count(*)
+-- from shop.customers
+-- where Country = 'Germany';
+
+
+-- select * from shop.employees
+
+-- select substring(column_name, index_position, starting_position)
+-- select FirstName, substring(FirstName, 2, 4) as part_part
+-- from shop.employees
+-- order by FirstName;
+
+-- select FirstName, substring(FirstName from 2 for 3) as part_part
+-- from shop.employees
+-- order by FirstName;
+
+
+-- select left(column_name, index_position)
+-- select FirstName, left(FirstName, 3)
+-- from shop.employees
+
+
+-- select right(column_name, index_position)
+-- select FirstName, right(FirstName, 3) as from_right_start
+-- from shop.employees
+-- from shop.employees
+
+
+-- select firstname, upper(FirstName) as Uppercase
+-- from shop.employees
+
+-- select firstname, lower(FirstName) as lowercase
+-- from shop.employees
+
+-- select * 
+-- from shop.employees
+-- where length(FirstName) = 5
+
+-- select concat(FirstName, ' ', LastName) as fullname
+-- from shop.employees
+-- order by FirstName asc
+
+-- select round(avg(Price), 2)
+-- from shop.products
+
+
+
+-- -----------------------------------------------------------------------------
 -- select *
 -- from shop.customers
-
 
 -- select count(*) as postalcode_count
 -- from shop.customers
@@ -184,6 +245,11 @@
 -- where (productName like 'A%') or (productName like 'E%') or (productName like 'K%') or (productName like 'M%');
 
 
-SELECT MIN(price), MAX(price)
-FROM shop.products
-WHERE (productName LIKE 'A%') OR (productName LIKE 'E%') OR (productName LIKE 'K%') OR (productName LIKE 'M%');
+-- SELECT MIN(price), MAX(price)
+-- FROM products
+-- WHERE (productName LIKE 'A%') OR (productName LIKE 'E%') OR (productName LIKE 'K%') OR (productName LIKE 'M%');
+
+
+select round(avg(CategoryID), 2)
+from shop.products
+order by price desc
