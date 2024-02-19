@@ -152,7 +152,38 @@
 -- and (SupplierID between 5 and 10)
 -- and (CategoryID between 5 and 10);
 
-SELECT * FROM shop.products
-WHERE (Unit LIKE '% g %' OR Unit LIKE '% kg %')
-AND (SupplierID BETWEEN 5 AND 10)
-AND (CategoryID BETWEEN 5 AND 10);
+-- SELECT * FROM shop.products
+-- WHERE (Unit LIKE '% g %' OR Unit LIKE '% kg %')
+-- AND (SupplierID BETWEEN 5 AND 10)
+-- AND (CategoryID BETWEEN 5 AND 10);
+
+
+-- SELECT *
+-- FROM shop.orders
+-- WHERE EmployeeID IS NULL;
+
+-- exercise 2 ------------------------------------------------------------------------------------------------------
+-- select *
+-- from shop.customers
+
+
+-- select count(*) as postalcode_count
+-- from shop.customers
+-- where length(postalcode) = 5;
+
+-- SELECT COUNT(*) AS postalcode_count
+-- FROM customers
+-- WHERE LENGTH(postalcode) = 5;
+
+
+-- select * 
+-- from shop.products
+
+-- select min(price), max(price)
+-- from shop.products
+-- where (productName like 'A%') or (productName like 'E%') or (productName like 'K%') or (productName like 'M%');
+
+
+SELECT MIN(price), MAX(price)
+FROM shop.products
+WHERE (productName LIKE 'A%') OR (productName LIKE 'E%') OR (productName LIKE 'K%') OR (productName LIKE 'M%');
