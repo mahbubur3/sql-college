@@ -250,6 +250,46 @@
 -- WHERE (productName LIKE 'A%') OR (productName LIKE 'E%') OR (productName LIKE 'K%') OR (productName LIKE 'M%');
 
 
-select round(avg(CategoryID), 2)
-from shop.products
-order by price desc
+-- select round(avg(CategoryID), 2)
+-- from shop.products
+-- order by price desc
+
+
+
+-- select CategoryID, round(avg(CategoryID), 2) as average_price
+-- from shop.products
+-- group by CategoryID
+-- order by average_price desc;
+
+-- SELECT CategoryID, ROUND(AVG(CategoryID), 2) AS average_price
+-- FROM products
+-- GROUP BY CategoryID
+-- ORDER BY average_price DESC;
+
+
+
+
+-- select concat(FirstName, ' ', LastName, ' is born in ', left(BirthDate, 4)) as employee_info
+-- from shop.employees
+-- order by BirthDate;
+
+-- select concat(FirstName, ' ', LastName, ' is born in ', year(BirthDate)) as employee_info
+-- from shop.employees
+-- order by BirthDate;
+
+-- SELECT CONCAT(FirstName, ' ', LastName, ' is born in ', LEFT(BirthDate, 4)) AS employee_info
+-- FROM employees
+-- ORDER BY BirthDate;
+
+
+-- select * from shop.orders
+
+-- select EmployeeID, count(*) as order_count
+-- from shop.orders
+-- group by EmployeeID
+-- having count(*) > 20;
+
+SELECT EmployeeID, COUNT(*) AS order_count
+FROM orders
+GROUP BY EmployeeID
+HAVING COUNT(*) > 20;
