@@ -289,7 +289,56 @@
 -- group by EmployeeID
 -- having count(*) > 20;
 
-SELECT EmployeeID, COUNT(*) AS order_count
+-- SELECT EmployeeID, COUNT(*) AS order_count
+-- FROM orders
+-- GROUP BY EmployeeID
+-- HAVING COUNT(*) > 20;
+
+
+
+-- select SupplierID, sum(Price) as total_price, round(avg(Price)) as average_price, count(*) as amount_of_products, sum(case when Price is null then 1 else 0 end) as null_count
+-- from shop.products
+-- group by SupplierID;
+
+-- select SupplierID, sum(Price) as total_price, round(avg(Price)) as average_price, count(*) as amount_of_products, count(*) - count(price) as null_count
+-- from shop.products
+-- group by SupplierID;
+
+-- SELECT SupplierID, SUM(Price) AS total_price, ROUND(AVG(Price)) AS average_price, COUNT(*) AS amount_of_products, COUNT(*) - COUNT(price) AS null_count
+-- FROM products
+-- GROUP BY SupplierID;
+
+
+-- select * from shop.suppliers
+
+-- select Phone,
+-- 	case
+-- 		when Phone like '%(%)%' and Phone like '%-%' then 'Valid'
+-- 		when Phone like '%(%)%' or Phone like '%-%' then 'Partly valid'
+-- 		else 'Not a phone number'
+-- 	end as category
+-- from shop.suppliers
+
+
+-- SELECT Phone,
+-- 	CASE
+-- 		WHEN Phone LIKE '%(%)%' AND Phone LIKE '%-%' THEN 'Valid'
+-- 		WHEN Phone LIKE '%(%)%' OR Phone LIKE '%-%' THEN 'Partly valid'
+-- 		ELSE 'Not a phone number'
+-- 	END AS category
+-- FROM shop.suppliers
+
+
+-- select * from shop.orders
+
+-- select CustomerID, count(OrderID) as number_of_orders
+-- from shop.orders
+-- where (ShipperID = 1 or ShipperID = 3)
+-- group by CustomerID
+-- having count(OrderID) >= 3;
+
+SELECT CustomerID, COUNT(OrderID) AS number_of_orders
 FROM orders
-GROUP BY EmployeeID
-HAVING COUNT(*) > 20;
+WHERE (ShipperID = 1 or ShipperID = 3)
+GROUP BY CustomerID
+HAVING COUNT(OrderID) >= 3;
