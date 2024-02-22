@@ -337,8 +337,50 @@
 -- group by CustomerID
 -- having count(OrderID) >= 3;
 
-SELECT CustomerID, COUNT(OrderID) AS number_of_orders
-FROM orders
-WHERE (ShipperID = 1 or ShipperID = 3)
-GROUP BY CustomerID
-HAVING COUNT(OrderID) >= 3;
+-- SELECT CustomerID, COUNT(OrderID) AS number_of_orders
+-- FROM orders
+-- WHERE (ShipperID = 1 or ShipperID = 3)
+-- GROUP BY CustomerID
+-- HAVING COUNT(OrderID) >= 3;
+
+
+-- ----------------------------------
+-- select * 
+-- from shop.orders inner join shop.orderdetails
+-- on orders.OrderID = orderdetails.OrderID
+
+-- select * 
+-- from shop.products inner join shop.shippers
+-- on products.ProductID = shippers.ShipperID
+
+-- select P.ProductName, C.CategoryName, P.Price
+-- from shop.products P
+-- left join categories C on P.CategoryID = C.CategoryID
+-- order by P.ProductName;
+
+-- SELECT P.ProductName, C.CategoryName, P.Price
+-- FROM shop.products P
+-- LEFT JOIN categories C ON P.CategoryID = C.CategoryID
+-- ORDER BY P.ProductName;
+
+-- select *
+-- from shop.products
+-- where Price > (
+-- 	select avg(Price) from Products
+-- )
+-- order by Price desc;
+
+-- SELECT *
+-- FROM shop.products
+-- WHERE Price > (
+-- 	SELECT AVG(Price) 
+--     FROM Products
+-- )
+-- ORDER BY Price DESC;
+
+SELECT CONCAT(E.FirstName, ' ', E.LastName) AS full_name, COUNT(O.OrderID) AS amount
+FROM shop.employees E
+INNER JOIN Orders O ON E.EmployeeID = O.EmployeeID
+GROUP BY E.EmployeeID
+HAVING COUNT(O.OrderID) >= 2
+ORDER BY amount DESC;
