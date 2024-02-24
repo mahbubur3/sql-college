@@ -378,9 +378,85 @@
 -- )
 -- ORDER BY Price DESC;
 
-SELECT CONCAT(E.FirstName, ' ', E.LastName) AS full_name, COUNT(O.OrderID) AS amount
-FROM shop.employees E
-INNER JOIN Orders O ON E.EmployeeID = O.EmployeeID
-GROUP BY E.EmployeeID
-HAVING COUNT(O.OrderID) >= 2
-ORDER BY amount DESC;
+-- SELECT CONCAT(E.FirstName, ' ', E.LastName) AS full_name, COUNT(O.OrderID) AS amount
+-- FROM shop.employees E
+-- INNER JOIN Orders O ON E.EmployeeID = O.EmployeeID
+-- GROUP BY E.EmployeeID
+-- HAVING COUNT(O.OrderID) >= 2
+-- ORDER BY amount DESC;
+
+
+-- select shippers.ShipperName, sum(orderdetails.Quantity) as ProductsTransferred
+-- from shop.Shippers shippers
+-- join Orders orders on shippers.ShipperID = orders.ShipperID
+-- join OrderDetails orderdetails on orders.OrderID = orderdetails.OrderID
+-- group by shippers.ShipperName;
+
+-- SELECT s.ShipperName, SUM(od.Quantity) as TotalProductsTransferred
+-- FROM shop.Shippers s
+-- JOIN Orders o ON s.ShipperID = o.ShipperID
+-- JOIN OrderDetails od ON o.OrderID = od.OrderID
+-- GROUP BY s.ShipperName;
+
+-- SELECT s.ShipperName, COUNT(od.OrderDetailID) AS TotalProductsTransferred
+-- FROM shop.Shippers s
+-- JOIN Orders o ON s.ShipperID = o.ShipperID
+-- JOIN Orderdetails od ON o.OrderID = od.OrderID
+-- GROUP BY s.ShipperName;
+
+-- select * from shop.orderdetails
+
+-- select * from shop.orders
+
+-- SELECT s.ShipperName, SUM(od.Quantity) as products_transferred_total
+-- FROM shop.Shippers s
+-- JOIN Orders o ON s.ShipperID = o.ShipperID
+-- JOIN OrderDetails od ON o.OrderID = od.OrderID
+-- GROUP BY s.ShipperName;
+
+-- SELECT s.SupplierName
+-- FROM shop.suppliers s
+-- JOIN products p ON s.SupplierID = p.SupplierID
+-- WHERE p.Price < (SELECT AVG(Price) FROM products)
+-- UNION
+-- SELECT s.SupplierName
+-- FROM suppliers s
+-- WHERE LENGTH(s.ContactName) > 12;
+
+-- SELECT s.SupplierName
+-- FROM shop.suppliers s
+-- JOIN products p ON s.SupplierID = p.SupplierID
+-- WHERE p.Price < (
+-- 	SELECT AVG(Price)
+--     FROM products
+-- )
+-- UNION
+-- SELECT s.SupplierName
+-- FROM suppliers s
+-- WHERE LENGTH(s.ContactName) > 12;
+
+
+
+-- SELECT DISTINCT SupplierName
+-- FROM shop.suppliers
+-- WHERE SupplierID IN (
+--     SELECT SupplierID
+--     FROM products
+--     WHERE Price < (
+--         SELECT AVG(Price)
+--         FROM products
+--     )
+-- )
+-- UNION
+-- SELECT DISTINCT SupplierName
+-- FROM suppliers
+-- WHERE LENGTH(ContactName) > 12;
+
+
+SELECT c.Country, COUNT(o.OrderID) AS orders_total
+FROM shop.customers c
+JOIN orders o ON c.CustomerID = o.CustomerID
+GROUP BY c.Country
+ORDER BY orders_total DESC
+LIMIT 5;
+
