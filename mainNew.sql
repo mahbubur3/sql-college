@@ -453,10 +453,310 @@
 -- WHERE LENGTH(ContactName) > 12;
 
 
-SELECT c.Country, COUNT(o.OrderID) AS orders_total
-FROM shop.customers c
-JOIN orders o ON c.CustomerID = o.CustomerID
-GROUP BY c.Country
-ORDER BY orders_total DESC
-LIMIT 5;
+-- SELECT c.Country, COUNT(o.OrderID) AS orders_total
+-- FROM shop.customers c
+-- JOIN orders o ON c.CustomerID = o.CustomerID
+-- GROUP BY c.Country
+-- ORDER BY orders_total DESC
+-- LIMIT 5;
 
+
+-- select o.OrderID, Sum(od.Quantity * p.Price) as TotalPrice
+-- from orders o
+-- join orderdetails od on o.OrderID = od.OrderID
+-- join products p on od.ProductID = p.ProductID
+-- group by o.OrderID
+-- having count(od.ProductID) >= 5
+-- order by TotalPrice desc;
+
+
+-- SELECT o.OrderID, SUM(od.Quantity * p.Price) AS TotalPrice
+-- FROM orders o
+-- JOIN orderdetails od ON o.OrderID = od.OrderID
+-- JOIN products p ON od.ProductID = p.ProductID
+-- WHERE o.OrderID IN (
+-- 	SELECT OrderID 
+-- 	FROM orderdetails 
+-- 	GROUP BY OrderID 
+-- 	HAVING COUNT(ProductID) >= 5
+-- )
+-- GROUP BY o.OrderID
+-- ORDER BY TotalPrice DESC;
+
+
+-- SELECT s.SupplierName
+-- FROM shop.suppliers s
+-- INNER JOIN products p ON s.SupplierID = p.SupplierID
+-- GROUP BY s.SupplierName, p.Unit
+-- HAVING COUNT(p.ProductID) >= 5 AND p.Unit = 'Box';
+
+-- SELECT 
+--     s.SupplierID, 
+--     s.SupplierName
+-- FROM 
+--     suppliers s
+-- JOIN 
+--     products p ON s.SupplierID = p.SupplierID
+-- WHERE 
+--     p.Unit LIKE '%box%'
+-- GROUP BY 
+--     s.SupplierID, 
+--     s.SupplierName
+-- HAVING 
+--     COUNT(p.ProductID) >= 5;
+
+
+-- select * from shop.products
+
+
+-- SELECT 
+--     s.SupplierID,
+--     s.SupplierName,
+--     COUNT(p.ProductID) AS TotalProducts
+-- FROM 
+--     suppliers s
+-- JOIN 
+--     products p ON s.SupplierID = p.SupplierID
+-- WHERE 
+--     p.Unit LIKE '% boxes %'
+-- GROUP BY 
+--     s.SupplierID, s.SupplierName
+-- HAVING 
+--     COUNT(p.ProductID) >= 5;
+
+
+-- SELECT CustomerName 
+-- FROM customers 
+-- WHERE CustomerID NOT IN (
+-- 	SELECT CustomerID
+--     FROM orders
+-- )
+-- UNION
+-- SELECT c.CustomerName 
+-- FROM customers c
+-- JOIN orders o ON c.CustomerID = o.CustomerID
+-- JOIN orderdetails od ON o.OrderID = od.OrderID
+-- JOIN products p ON od.ProductID = p.ProductID
+-- WHERE p.Price > 100;
+
+
+
+-- SELECT c.*
+-- FROM customers c
+-- INNER JOIN suppliers s
+-- ON c.City = s.City AND c.PostalCode = s.PostalCode
+-- UNION
+-- SELECT c.*
+-- FROM customers c
+-- WHERE LENGTH(c.CustomerName) >= (
+-- 	SELECT MAX(LENGTH(SupplierName)) - 5
+-- 	FROM suppliers
+-- );
+
+-- SELECT c.*
+-- FROM customers c
+-- INNER JOIN suppliers s ON c.City = s.City AND c.PostalCode = s.PostalCode
+-- UNION
+-- SELECT c.*
+-- FROM customers c
+-- INNER JOIN (
+--   SELECT SupplierName, MAX(LENGTH(SupplierName)) AS longest_name
+--   FROM suppliers
+--   GROUP BY SupplierName
+-- ) AS long_names
+-- ON c.CustomerName LIKE CONCAT(long_names.SupplierName, '%')
+-- WHERE LENGTH(c.CustomerName) <= long_names.longest_name - 5;
+
+
+-- SELECT * FROM customers
+-- WHERE City IN (SELECT City FROM suppliers)
+-- AND PostalCode IN (SELECT PostalCode FROM suppliers)
+-- UNION
+-- SELECT * FROM customers
+-- WHERE LENGTH(CustomerName) >= (SELECT MAX(LENGTH(SupplierName)) - 5 FROM suppliers);
+
+
+-- copilot
+-- SELECT s.SupplierName, COUNT(p.ProductID) AS NumberOfProducts
+-- FROM suppliers s
+-- JOIN products p ON s.SupplierID = p.SupplierID
+-- WHERE p.Unit LIKE '%boxes%'
+-- GROUP BY s.SupplierID, s.SupplierName
+-- HAVING COUNT(p.ProductID) >= 5;
+
+-- chat gpt
+-- SELECT s.SupplierID, s.SupplierName, COUNT(p.ProductID) AS ProductCount
+-- FROM suppliers s
+-- JOIN products p ON s.SupplierID = p.SupplierID
+-- WHERE p.Unit = 'boxes'
+-- GROUP BY s.SupplierID, s.SupplierName
+-- HAVING COUNT(p.ProductID) >= 5;
+
+-- gemini
+-- SELECT s.SupplierName
+-- FROM suppliers AS s
+-- INNER JOIN products AS p ON s.SupplierID = p.SupplierID
+-- WHERE p.Unit = ' boxes '
+-- GROUP BY s.SupplierName
+-- HAVING COUNT(p.ProductID) >= 5;
+
+
+-- select * from shop.products
+-- SELECT s.SupplierID, s.SupplierName
+-- FROM shop.suppliers s
+-- JOIN (
+--     SELECT SupplierID
+--     FROM shop.products
+--     WHERE Unit = ' boxes '
+--     GROUP BY SupplierID
+--     HAVING COUNT(ProductID) >= 5
+-- ) AS subquery ON s.SupplierID = subquery.SupplierID;
+
+-- SELECT s.SupplierName
+-- FROM suppliers AS s
+-- INNER JOIN products AS p ON s.SupplierID = p.SupplierID
+-- WHERE p.Unit = 'boxes'
+-- GROUP BY s.SupplierName
+-- HAVING COUNT(p.ProductID) >= 5;
+
+
+-- select * from shop.products
+-- select * from shop.suppliers
+-- where (Unit like '%boxes%')
+
+
+-- SELECT s.SupplierID, s.SupplierName
+-- FROM suppliers s
+-- JOIN products p ON s.SupplierID = p.SupplierID
+-- WHERE p.Unit LIKE '%boxes%'
+-- GROUP BY s.SupplierID, s.SupplierName
+-- HAVING COUNT(p.ProductID) >= 5;
+
+
+
+
+-- SELECT s.SupplierName
+-- FROM suppliers s
+-- INNER JOIN products p ON s.SupplierID = p.SupplierID
+-- WHERE TRIM(p.Unit) LIKE '%Boxes%' -- Use LIKE with wildcard (%) to match variations
+-- GROUP BY s.SupplierID
+-- HAVING COUNT(p.ProductID) >= 5;
+
+
+-- SELECT s.SupplierID, s.SupplierName
+-- FROM suppliers s
+-- JOIN products p ON s.SupplierID = p.SupplierID
+-- WHERE p.Unit LIKE '%boxes%'
+-- GROUP BY s.SupplierID, s.SupplierName
+-- HAVING COUNT(p.ProductID) >= 5;
+
+
+
+-- SELECT s.SupplierID, s.SupplierName
+-- FROM suppliers s
+-- JOIN products p ON s.SupplierID = p.SupplierID
+-- WHERE p.Unit LIKE '%boxes%'
+-- GROUP BY s.SupplierID, s.SupplierName
+-- HAVING COUNT(p.ProductID) >= 5;
+
+
+
+-- sql basics 4---------------------------------------
+
+-- create database school
+
+-- create table student(
+-- 	studentID int not null auto_increment,
+--     firstName varchar(40) not null,
+--     lastName varchar(60) not null,
+--     address varchar(40) not null,
+--     phone varchar(15),
+--     email varchar(50),
+--     primary key(studentID)
+-- );
+
+-- create table participation(
+-- 	participationID int not null auto_increment,
+--     studentID int not null,
+--     dateOfParticipation date not null,
+--     primary key(participationID),
+--     foreign key(studentID) references student(studentID)
+-- );
+
+-- CREATE TABLE departments (
+--     DepartmentID VARCHAR(8) NOT NULL,
+--     DepartmentName VARCHAR(50) NOT NULL,
+--     Duty VARCHAR(50) NOT NULL,
+--     Budget DECIMAL(10, 2) NOT NULL,
+--     StartDate DATE NOT NULL,
+--     primary key (DepartmentID)
+-- );
+-- DELIMITER $$
+-- CREATE TRIGGER validateDepartmentID
+-- BEFORE INSERT ON departments
+-- FOR EACH ROW
+-- BEGIN
+--     IF NEW.DepartmentID NOT REGEXP '^[A-Z]{4}[0-9]{4}$' THEN
+--         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'DepartmentID format wrong';
+--     END IF;
+-- END $$
+-- DELIMITER ;
+
+
+-- alter table departments
+-- add column ManagerID int;
+
+-- create table employees (
+-- 	EmployeeID int,
+--     FirstName varchar(50) not null,
+--     LastName varchar(50) not null,
+--     DepartmentID varchar(8),
+--     primary key (EmployeeID),
+--     foreign key (DepartmentID) references departments(DepartmentID)
+-- );
+
+-- alter table departments
+-- add constraint fk_manager_employee
+-- foreign key (ManagerID) references employees(EmployeeID);
+
+/*
+create table tasks (
+	TaskID int auto_increment,
+    TaskName varchar(50),
+    TaskDescription text,
+    StartDate date,
+    EndDatae date,
+    TaskStatus varchar(20),
+    Priority varchar(10),
+    primary key (TaskID)
+);
+
+DELIMITER $$
+create trigger check_status before insert on tasks
+for each row
+begin
+	if new.TaskStatus not in ('In progress', 'Completed', 'Pending') then
+		signal sqlstate '45000' set message_text = 'Invalid task status';
+	end if;
+end $$
+DELIMITER $$
+
+DELIMITER $$
+create trigger check_priority before insert on tasks
+for each row
+begin
+	if new.Priority not in ('High', 'Medium', 'Low') then
+		signal sqlstate '45000' set message_text = 'Invalid priority';
+	end if;
+end $$
+DELIMITER $$;
+*/
+
+CREATE TABLE employees (
+    EmployeeID INT AUTO_INCREMENT,
+    FirstName VARCHAR(255),
+    LastName VARCHAR(255),
+    PRIMARY KEY (EmployeeID)
+);
+ALTER TABLE tasks
+ADD COLUMN EmployeeID INT;
