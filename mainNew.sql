@@ -751,12 +751,54 @@ begin
 end $$
 DELIMITER $$;
 */
+ 
+ 
+-- create database school
 
-CREATE TABLE employees (
-    EmployeeID INT AUTO_INCREMENT,
-    FirstName VARCHAR(255),
-    LastName VARCHAR(255),
-    PRIMARY KEY (EmployeeID)
-);
-ALTER TABLE tasks
-ADD COLUMN EmployeeID INT;
+-- create table student(
+-- 	StudentID int not null auto_increment,
+--     FirstName varchar(40) not null,
+--     LastName varchar(60) not null,
+--     Address varchar(40) not null,
+--     phone varchar(15),
+--     email varchar(50),
+--     primary key (StudentID)
+-- );
+
+-- create table participation(
+-- 	ParticipationID int not null auto_increment,
+--     StudentID int not null,
+--     DateOfParticipation date not null,
+--     primary key (ParticipationID),
+--     foreign key (StudentID) references student(StudentID)
+-- );
+
+-- add column
+-- alter table participation
+-- add column EnrollInformation longtext;
+
+-- alter table student
+-- modify column email varchar(60);
+
+-- check table
+-- describe participation;
+
+
+-- alter table student
+-- add column score int;
+-- DELIMITER $$
+-- create trigger check_score before insert on student
+-- for each row
+-- 	begin
+-- 		if NEW.score < 10 then 
+-- 			signal sqlstate "45000"
+--             set message_text = "Score too low";
+-- 		end if;
+-- 	end $$
+
+-- now insert and check validation
+-- insert into student(FirstName, LastName, Address, phone, email, score)
+-- values("John", "Smith", "NYC, USA", "+8946382", "johns@email.com", 10);
+
+-- now check table
+-- select * from student
