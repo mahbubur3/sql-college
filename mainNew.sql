@@ -802,3 +802,57 @@ DELIMITER $$;
 
 -- now check table
 -- select * from student
+
+/*
+create table departments(
+	DepartmentID varchar(8) not null,
+    DepartmentName varchar(40) not null,
+    Duty varchar(60) not null,
+    Budget decimal(8, 2),
+    StartDate date not null,
+    primary key (DepartmentID)
+);
+
+DELIMITER $$
+create trigger check_departmentID before insert on departments
+for each row
+	begin
+		if new.DepartmentID not regexp '^[A-Z]{4}[0-9]{4}$' then
+        signal sqlstate "45000"
+			set message_text = "DepartmentID must be four letters followed by four numbers!";
+		end if;
+    end $$
+
+insert into departments(DepartmentID, DepartmentName, Duty, Budget, StartDate)
+values("aabd789", "Information Technology", "Data Entry", "8700.00", "2019-01-22")
+*/
+-- insert into departments(DepartmentID, DepartmentName, Duty, Budget, StartDate, ManagerID)
+-- values("urts3442", "Writing", "Typing", "3980.00", "2020-01-30", 998); 
+
+-- select * from departments
+
+-- alter table departments
+-- add column ManagerID int;
+
+-- alter table departments
+-- add constraint fk_department_manager
+-- foreign key (ManagerID) references employees(EmployeeID);
+
+-- select * from departments
+-- select * from employees
+
+-- alter table departments
+-- drop column ManagerID;
+-- ALTER TABLE departments DROP FOREIGN KEY FK_Manager_Employee;
+
+
+
+-- ALTER TABLE departments
+-- ADD COLUMN CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+-- ADD COLUMN UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+
+
+select * from departments
+
+
