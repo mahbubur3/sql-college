@@ -853,6 +853,47 @@ values("aabd789", "Information Technology", "Data Entry", "8700.00", "2019-01-22
 
 
 
-select * from departments
+-- ALTER TABLE employees
+-- ADD COLUMN DepartmentID int;
+
+-- ALTER TABLE employees
+-- ADD CONSTRAINT fk_employee_department
+-- FOREIGN KEY (DepartmentID) REFERENCES departments(DepartmentID)
+
+
+CREATE TABLE tasks (
+	TaskID INT AUTO_INCREMENT,
+    TaskName VARCHAR(50),
+    TaskDescription LONGTEXT,
+    StartDate DATE,
+    EndDate date,
+    TaskStatus varchar(20),
+    Priority varchar(20),
+    primary key (TaskID)
+);
+
+DELIMITER $$
+CREATE TRIGGER check_task_status BEFORE INSERT ON tasks
+FOR EACH ROW
+	BEGIN
+		IF NEW.TaskStatus <> 'In progress' AND NEW.TaskStatus <> 'Completed' AND NEW.TaskStatus <> 'Pending' THEN
+			SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'TaskStatues must be "In progress", "Completed", or "Pending"';
+        END IF;
+    END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER check_priority BEFORE INSERT ON tasks
+FOR EACH ROW
+	BEGIN
+		IF NEW.Priority <> 'High' AND NEW.Priority <> 'Medium' AND NEW.Priority <> 'Low' THEN
+			SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Priority must be "High", "Medium", or "Low"';
+		END IF;
+    END $$
+DELIMITER ;
+
+
 
 
