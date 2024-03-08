@@ -860,7 +860,7 @@ values("aabd789", "Information Technology", "Data Entry", "8700.00", "2019-01-22
 -- ADD CONSTRAINT fk_employee_department
 -- FOREIGN KEY (DepartmentID) REFERENCES departments(DepartmentID)
 
-
+/*
 CREATE TABLE tasks (
 	TaskID INT AUTO_INCREMENT,
     TaskName VARCHAR(50),
@@ -893,7 +893,8 @@ FOR EACH ROW
 		END IF;
     END $$
 DELIMITER ;
+*/
 
-
-
-
+ALTER TABLE tasks
+ADD EmployeeID INT,
+ADD FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID);
