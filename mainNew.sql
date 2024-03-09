@@ -951,6 +951,8 @@ FOR EACH ROW
     END $$
 */
 
+
+/*
 DELIMITER $$
 CREATE TRIGGER check_tasks_insert BEFORE INSERT ON tasks
 FOR EACH ROW
@@ -964,3 +966,15 @@ FOR EACH ROW
 				SET MESSAGE_TEXT = 'Cannot insert! Priority must be one of the following: Low, Medium, High';
 		END IF;
     END $$
+*/
+
+-- --------------------------------exercise 5
+
+-- INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
+-- VALUES ('AAAA0001', 'North', 'Accounting', 200000, '2018-02-02', 'William Brown', CURRENT_DATE());
+
+-- INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
+-- VALUES ('AABB0002', 'South', 'Marketing', 400000, '2018-02-22', 'Steven Buchanan', CURRENT_DATE());
+
+-- INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
+-- VALUES ('AACC0003', 'West', 'Management', 800000, '2018-01-12', 'Janet Leverling', CURRENT_DATE());
