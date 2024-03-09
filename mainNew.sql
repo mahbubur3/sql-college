@@ -895,6 +895,72 @@ FOR EACH ROW
 DELIMITER ;
 */
 
-ALTER TABLE tasks
-ADD EmployeeID INT,
-ADD FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID);
+
+-- ALTER TABLE tasks
+-- ADD EmployeeID INT,
+-- ADD FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID);
+
+
+/*
+CREATE TABLE payment_methods (
+	PaymentMethodID INT,
+    PaymentType VARCHAR(30),
+    IsCreditCard BOOLEAN NOT NULL,
+    CardType VARCHAR(20) DEFAULT NULL,
+    ExpirationDate DATE DEFAULT NULL,
+    BillingAddress VARCHAR(20)
+);
+
+DELIMITER $$
+CREATE TRIGGER check_credit_card before insert on payment_methods
+FOR EACH ROW
+	BEGIN
+		IF NEW.IsCreditCard = TRUE THEN
+			IF NEW.CardType IS NULL OR NEW.ExpirationDate IS NULL THEN
+				SIGNAL SQLSTATE '45000'
+					SET MESSAGE_TEXT = 'Error: CardType and ExpirationDate cannot be NULL when IsCreditCard is TRUE';
+			END IF;
+		END IF;
+	END $$
+DELIMITER ;
+*/
+
+
+/*
+ALTER TABLE orders
+ADD COLUMN PaymentMethodID INT;
+
+ALTER TABLE orders
+ADD FOREIGN KEY (PaymentMethodID) REFERENCES payment_methods(PaymentMethodID);
+*/
+
+
+/*
+DELIMITER $$
+CREATE TRIGGER check_insert_depatment BEFORE INSERT ON departments
+FOR EACH ROW
+	BEGIN
+		IF NEW.Budget > 1000000 THEN
+			SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Cannot insert! Budget greater than one million';
+		END IF;
+        IF length(NEW.DepartmentID) != 8 THEN
+			SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Cannot insert! DepartmentID is not exactly eight characters long';
+		END IF;
+    END $$
+*/
+
+DELIMITER $$
+CREATE TRIGGER check_tasks_insert BEFORE INSERT ON tasks
+FOR EACH ROW
+	BEGIN
+		IF NEW.EndDate < CURRENT_DATE THEN
+			SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Cannot insert! EndDate is int the past';
+		END IF;
+        IF NOT (NEW.Priority <> 'Low' AND NEW.Priority <> 'Medium' AND NEW.Priority <> 'High') THEN
+			SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Cannot insert! Priority must be one of the following: Low, Medium, High';
+		END IF;
+    END $$
