@@ -969,12 +969,45 @@ FOR EACH ROW
 */
 
 -- --------------------------------exercise 5
+/*
+INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
+VALUES ('AAAA0001', 'North', 'Accounting', 200000, '2018-02-02', 'William Brown', CURRENT_DATE());
 
--- INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
--- VALUES ('AAAA0001', 'North', 'Accounting', 200000, '2018-02-02', 'William Brown', CURRENT_DATE());
+INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
+VALUES ('AABB0002', 'South', 'Marketing', 400000, '2018-02-22', 'Steven Buchanan', CURRENT_DATE());
 
--- INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
--- VALUES ('AABB0002', 'South', 'Marketing', 400000, '2018-02-22', 'Steven Buchanan', CURRENT_DATE());
+INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
+VALUES ('AACC0003', 'West', 'Management', 800000, '2018-01-12', 'Janet Leverling', CURRENT_DATE());
+*/
 
--- INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
--- VALUES ('AACC0003', 'West', 'Management', 800000, '2018-01-12', 'Janet Leverling', CURRENT_DATE());
+/*
+insert into tasks (TaskName, TaskDescription, StartDate, EndDate, TaskStatus, Priority, Employee)
+values
+('Financial Report Analysis', 'Analyze and prepare financial reports for Q1', '2024-02-01', '2024-05-15', 'In Progress', 'High', 'John Smith'),
+('Social Media Campaign', 'Plan and execute a social media marketing campaign', '2024-02-10', '2024-06-28', 'Pending', 'Medium', 'Michael Suyama'),
+('Strategic Planning', 'Develop a strategic plan for the upcoming quarter', '2024-06-01', '2024-07-20', 'Not Started', 'High', 'Anna Davis');
+*/
+
+/*
+ALTER TABLE tasks
+ADD COLUMN EmployeeName VARCHAR(25);
+
+INSERT INTO tasks(EmployeeID, EmployeeName)
+VALUES
+(1, 'John Smith'),
+(2, 'Micheal Suyama'),
+(3, 'Anna Davis');
+
+INSERT INTO tasks (TaskName, TaskDescription, StartDate, EndDate, TaskStatus, Priority, EmployeeID)
+VALUES
+('Financial Report Analysis', 'Analyze and prepare financial reports for Q1', '2024-02-01', '2024-05-15', 'In Progress', 'High', 1),
+('Social Media Campaign', 'Plan and execute a social media marketing campaign', '2024-02-10', '2024-06-28', 'Pending', 'Medium', 2),
+('Strategic Planning', 'Develop a strategic plan for the upcoming quarter', '2024-06-01', '2024-07-20', 'Not Started', 'High', 3);
+*/
+
+
+insert into payment_methods(PaymentType, IsCreditCard, CardType, ExpirationDate, BillingAddress)
+values
+('Credit card', 'Yes', 'Visa', '2024-12-31', '123 Main St Cityville'),
+('PayPal', 'No', NULL, NULL, '202 Elm St Countryside'),
+('Debit card', 'Yes', 'MasterCard', '2025-10-10', '789 Pine St Villagetown');
