@@ -755,23 +755,26 @@ DELIMITER $$;
  
 -- create database school
 
--- create table student(
--- 	StudentID int not null auto_increment,
---     FirstName varchar(40) not null,
---     LastName varchar(60) not null,
---     Address varchar(40) not null,
---     phone varchar(15),
---     email varchar(50),
---     primary key (StudentID)
--- );
+/*
+create table student(
+	StudentID int not null auto_increment,
+    FirstName varchar(40) not null,
+    LastName varchar(60) not null,
+    Address varchar(40) not null,
+    phone varchar(15),
+    email varchar(50),
+    primary key (StudentID)
+);
 
--- create table participation(
--- 	ParticipationID int not null auto_increment,
---     StudentID int not null,
---     DateOfParticipation date not null,
---     primary key (ParticipationID),
---     foreign key (StudentID) references student(StudentID)
--- );
+create table participation(
+	ParticipationID int not null auto_increment,
+    StudentID int not null,
+    DateOfParticipation date not null,
+    primary key (ParticipationID),
+    foreign key (StudentID) references student(StudentID)
+);
+*/
+
 
 -- add column
 -- alter table participation
@@ -784,17 +787,20 @@ DELIMITER $$;
 -- describe participation;
 
 
--- alter table student
--- add column score int;
--- DELIMITER $$
--- create trigger check_score before insert on student
--- for each row
--- 	begin
--- 		if NEW.score < 10 then 
--- 			signal sqlstate "45000"
---             set message_text = "Score too low";
--- 		end if;
--- 	end $$
+/*
+alter table student
+add column score int;
+DELIMITER $$
+create trigger check_score before insert on student
+for each row
+	begin
+		if NEW.score < 10 then 
+			signal sqlstate "45000"
+            set message_text = "Score too low";
+		end if;
+	end $$
+*/
+
 
 -- now insert and check validation
 -- insert into student(FirstName, LastName, Address, phone, email, score)
@@ -1042,3 +1048,18 @@ WHERE TaskName = 'Strategic Planning' AND EmployeeID = 3;
 */
 
 
+/*
+UPDATE departments
+SET Budget = Budget * 2
+WHERE Duty = 'Marketing';
+*/
+
+-- CREATE TABLE orders_backup AS SELECT * FROM orders
+
+-- INSERT INTO orders_backup
+-- SELECT * FROM orders
+-- WHERE OrderDate >= '2023-08-18';
+
+-- select * from orders
+
+select * from shippers
