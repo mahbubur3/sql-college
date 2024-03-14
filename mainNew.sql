@@ -980,6 +980,7 @@ INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, 
 VALUES ('AACC0003', 'West', 'Management', 800000, '2018-01-12', 'Janet Leverling', CURRENT_DATE());
 */
 
+
 /*
 insert into tasks (TaskName, TaskDescription, StartDate, EndDate, TaskStatus, Priority, Employee)
 values
@@ -987,6 +988,7 @@ values
 ('Social Media Campaign', 'Plan and execute a social media marketing campaign', '2024-02-10', '2024-06-28', 'Pending', 'Medium', 'Michael Suyama'),
 ('Strategic Planning', 'Develop a strategic plan for the upcoming quarter', '2024-06-01', '2024-07-20', 'Not Started', 'High', 'Anna Davis');
 */
+
 
 /*
 ALTER TABLE tasks
@@ -1006,8 +1008,37 @@ VALUES
 */
 
 
+/*
 insert into payment_methods(PaymentType, IsCreditCard, CardType, ExpirationDate, BillingAddress)
 values
 ('Credit card', 'Yes', 'Visa', '2024-12-31', '123 Main St Cityville'),
 ('PayPal', 'No', NULL, NULL, '202 Elm St Countryside'),
 ('Debit card', 'Yes', 'MasterCard', '2025-10-10', '789 Pine St Villagetown');
+*/
+
+
+/*
+update employees
+set DepartmentID = 'AABB0002'
+where (LastName, FirstName) in (('Dodsworth', 'Anne'), ('Johnson','Emily'), ('Fuller','Andrew'));
+*/
+
+
+-- select * from orders
+-- select * from customers
+
+
+/*
+update orders
+set IsCreditCard = 'Yes', BillingAddress = '123 Main St Cityville'
+where CustomerID = 10;
+*/
+
+
+/*
+UPDATE tasks
+SET TaskStatus = 'In progress', StartDate = CURDATE()
+WHERE TaskName = 'Strategic Planning' AND EmployeeID = 3;
+*/
+
+
