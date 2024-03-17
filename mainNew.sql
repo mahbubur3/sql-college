@@ -1062,4 +1062,10 @@ WHERE Duty = 'Marketing';
 
 -- select * from orders
 
-select * from shippers
+-- select * from shippers
+
+DELETE FROM orders_backup
+WHERE EmployeeID IS NULL AND ShipperID IN (
+	SELECT ShipperID FROM shippers
+    WHERE ShipperName IN ('Swift Shipping', 'Speedy Express')
+);
