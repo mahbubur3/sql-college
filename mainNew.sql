@@ -665,55 +665,61 @@
 
 -- create database school
 
--- create table student(
--- 	studentID int not null auto_increment,
---     firstName varchar(40) not null,
---     lastName varchar(60) not null,
---     address varchar(40) not null,
---     phone varchar(15),
---     email varchar(50),
---     primary key(studentID)
--- );
+/*
+create table student(
+	studentID int not null auto_increment,
+    firstName varchar(40) not null,
+    lastName varchar(60) not null,
+    address varchar(40) not null,
+    phone varchar(15),
+    email varchar(50),
+    primary key(studentID)
+);
 
--- create table participation(
--- 	participationID int not null auto_increment,
---     studentID int not null,
---     dateOfParticipation date not null,
---     primary key(participationID),
---     foreign key(studentID) references student(studentID)
--- );
+create table participation(
+	participationID int not null auto_increment,
+    studentID int not null,
+    dateOfParticipation date not null,
+    primary key(participationID),
+    foreign key(studentID) references student(studentID)
+);
+*/
 
--- CREATE TABLE departments (
---     DepartmentID VARCHAR(8) NOT NULL,
---     DepartmentName VARCHAR(50) NOT NULL,
---     Duty VARCHAR(50) NOT NULL,
---     Budget DECIMAL(10, 2) NOT NULL,
---     StartDate DATE NOT NULL,
---     primary key (DepartmentID)
--- );
--- DELIMITER $$
--- CREATE TRIGGER validateDepartmentID
--- BEFORE INSERT ON departments
--- FOR EACH ROW
--- BEGIN
---     IF NEW.DepartmentID NOT REGEXP '^[A-Z]{4}[0-9]{4}$' THEN
---         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'DepartmentID format wrong';
---     END IF;
--- END $$
--- DELIMITER ;
+/*
+CREATE TABLE departments (
+    DepartmentID VARCHAR(8) NOT NULL,
+    DepartmentName VARCHAR(50) NOT NULL,
+    Duty VARCHAR(50) NOT NULL,
+    Budget DECIMAL(10, 2) NOT NULL,
+    StartDate DATE NOT NULL,
+    primary key (DepartmentID)
+);
+DELIMITER $$
+CREATE TRIGGER validateDepartmentID
+BEFORE INSERT ON departments
+FOR EACH ROW
+BEGIN
+    IF NEW.DepartmentID NOT REGEXP '^[A-Z]{4}[0-9]{4}$' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'DepartmentID format wrong';
+    END IF;
+END $$
+DELIMITER ;
+*/
 
 
 -- alter table departments
 -- add column ManagerID int;
 
--- create table employees (
--- 	EmployeeID int,
---     FirstName varchar(50) not null,
---     LastName varchar(50) not null,
---     DepartmentID varchar(8),
---     primary key (EmployeeID),
---     foreign key (DepartmentID) references departments(DepartmentID)
--- );
+/*
+create table employees (
+	EmployeeID int,
+    FirstName varchar(50) not null,
+    LastName varchar(50) not null,
+    DepartmentID varchar(8),
+    primary key (EmployeeID),
+    foreign key (DepartmentID) references departments(DepartmentID)
+);
+*/
 
 -- alter table departments
 -- add constraint fk_manager_employee
@@ -1064,8 +1070,100 @@ WHERE Duty = 'Marketing';
 
 -- select * from shippers
 
+/*
 DELETE FROM orders_backup
 WHERE EmployeeID IS NULL AND ShipperID IN (
 	SELECT ShipperID FROM shippers
     WHERE ShipperName IN ('Swift Shipping', 'Speedy Express')
 );
+*/
+
+-- select * from workout
+
+-- select count(*) as park_workouts
+-- from workout
+-- where description like '%park%';
+
+/*
+SELECT name.name, COUNT(workouts.workout_id) AS workout_count
+FROM fitness_app.workout
+JOIN users ON workout.user_id = .user_id
+GROUP BY name.name
+HAVING COUNT(workout.workout_id) >= 3;
+*/
+
+/*
+SELECT name as username, COUNT(workout_id) AS workout_count
+FROM workout
+GROUP BY name
+HAVING COUNT(workout_id) >= 3;
+*/
+
+-- select * from system_user
+
+/*
+SELECT su.username, COUNT(w.workout_id) AS workout_count
+FROM system_user su
+JOIN workout w ON su.user_id = w.user_id
+GROUP BY su.username
+HAVING COUNT(w.workout_id) >= 3;
+*/
+
+/*
+SELECT system_user.username, COUNT(workout.workout_id) AS workout_count
+FROM system_user
+JOIN workout ON system_user.user_id = workout.user_id
+GROUP BY system_user.username
+HAVING COUNT(workout.workout_id) >= 3;
+*/
+
+/*
+SELECT system_user.username, AVG(workout.calories_burned) AS burned_average_calories
+FROM system_user
+JOIN workout ON system_user.user_id = workout.user_id
+JOIN exercise ON workout.exercise_id = exercise.exercise_id
+GROUP BY system_user.username;
+*/
+
+/*
+SELECT system_user.username, AVG(workout.calories_burned) AS average_calories_burned
+FROM workout
+JOIN exercise ON workout.exercise_id = exercise.exercise_id
+JOIN system_user ON workout.user_id = system_user.user_id
+WHERE exercise.category = 'Cardio'
+GROUP BY system_user.username;
+*/
+
+-- select * from achievement
+
+/*
+SELECT system_user.username, system_user.email
+FROM system_user
+JOIN achievement ON system_user.user_id = achievement.user_id
+WHERE achievement.achievement_type = 'First 5K Run'
+*/
+
+/*
+SELECT exercise.category, COUNT(workout.exercise_id) AS logged_count
+FROM workout
+JOIN exercise ON workout.exercise_id = exercise.exercise_id
+GROUP BY exercise.category
+ORDER BY logged_count DESC
+LIMIT 3;
+*/
+
+/*
+SELECT goal.goal_type, COUNT(*) AS count
+FROM goal
+JOIN achievement ON goal.user_id = achievement.user_id
+WHERE achievement.achievement_type = '10 Workouts Streak'
+GROUP BY goal.goal_type
+ORDER BY count DESC
+LIMIT 1;
+*/
+
+SELECT system_user.*
+FROM system_user
+LEFT JOIN workout ON system_user.user_id = workout.user_id
+JOIN goal ON system_user.user_id = goal.user_id
+WHERE workout.workout_id IS NULL AND goal.goal_type = 'Muscle Gain'
