@@ -1,3 +1,493 @@
+-- create database school
+create table student(
+	studentID int not null auto_increment,
+    firstName varchar(40) not null,
+    lastName varchar(60) not null,
+    address varchar(40) not null,
+    phone varchar(15),
+    email varchar(50),
+    primary key(studentID)
+);
+
+create table participation(
+	participationID int not null auto_increment,
+    studentID int not null,
+    dateOfParticipation date not null,
+    primary key(participationID),
+    foreign key(studentID) references student(studentID)
+);
+
+
+CREATE TABLE departments (
+    DepartmentID VARCHAR(8) NOT NULL,
+    DepartmentName VARCHAR(50) NOT NULL,
+    Duty VARCHAR(50) NOT NULL,
+    Budget DECIMAL(10, 2) NOT NULL,
+    StartDate DATE NOT NULL,
+    primary key (DepartmentID)
+);
+DELIMITER $$
+CREATE TRIGGER validateDepartmentID
+BEFORE INSERT ON departments
+FOR EACH ROW
+BEGIN
+    IF NEW.DepartmentID NOT REGEXP '^[A-Z]{4}[0-9]{4}$' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'DepartmentID format wrong';
+    END IF;
+END $$
+DELIMITER ;
+
+
+-- alter table departments
+-- add column ManagerID int;
+
+create table employees (
+	EmployeeID int,
+    FirstName varchar(50) not null,
+    LastName varchar(50) not null,
+    DepartmentID varchar(8),
+    primary key (EmployeeID),
+    foreign key (DepartmentID) references departments(DepartmentID)
+);
+
+-- alter table departments
+-- add constraint fk_manager_employee
+-- foreign key (ManagerID) references employees(EmployeeID);
+
+
+create table tasks (
+	TaskID int auto_increment,
+    TaskName varchar(50),
+    TaskDescription text,
+    StartDate date,
+    EndDatae date,
+    TaskStatus varchar(20),
+    Priority varchar(10),
+    primary key (TaskID)
+);
+
+DELIMITER $$
+create trigger check_status before insert on tasks
+for each row
+begin
+	if new.TaskStatus not in ('In progress', 'Completed', 'Pending') then
+		signal sqlstate '45000' set message_text = 'Invalid task status';
+	end if;
+end $$
+DELIMITER $$
+
+DELIMITER $$
+create trigger check_priority before insert on tasks
+for each row
+begin
+	if new.Priority not in ('High', 'Medium', 'Low') then
+		signal sqlstate '45000' set message_text = 'Invalid priority';
+	end if;
+end $$
+DELIMITER $$;
+
+ 
+-- create database school
+
+
+create table student(
+	StudentID int not null auto_increment,
+    FirstName varchar(40) not null,
+    LastName varchar(60) not null,
+    Address varchar(40) not null,
+    phone varchar(15),
+    email varchar(50),
+    primary key (StudentID)
+);
+
+create table participation(
+	ParticipationID int not null auto_increment,
+    StudentID int not null,
+    DateOfParticipation date not null,
+    primary key (ParticipationID),
+    foreign key (StudentID) references student(StudentID)
+);
+
+
+-- add column
+-- alter table participation
+-- add column EnrollInformation longtext;
+
+-- alter table student
+-- modify column email varchar(60);
+
+-- check table
+-- describe participation;
+
+
+alter table student
+add column score int;
+DELIMITER $$
+create trigger check_score before insert on student
+for each row
+	begin
+		if NEW.score < 10 then 
+			signal sqlstate "45000"
+            set message_text = "Score too low";
+		end if;
+	end $$
+
+
+-- now insert and check validation
+-- insert into student(FirstName, LastName, Address, phone, email, score)
+-- values("John", "Smith", "NYC, USA", "+8946382", "johns@email.com", 10);
+
+-- now check table
+-- select * from student
+
+create table departments(
+	DepartmentID varchar(8) not null,
+    DepartmentName varchar(40) not null,
+    Duty varchar(60) not null,
+    Budget decimal(8, 2),
+    StartDate date not null,
+    primary key (DepartmentID)
+);
+
+DELIMITER $$
+create trigger check_departmentID before insert on departments
+for each row
+	begin
+		if new.DepartmentID not regexp '^[A-Z]{4}[0-9]{4}$' then
+        signal sqlstate "45000"
+			set message_text = "DepartmentID must be four letters followed by four numbers!";
+		end if;
+    end $$
+
+insert into departments(DepartmentID, DepartmentName, Duty, Budget, StartDate)
+values("aabd789", "Information Technology", "Data Entry", "8700.00", "2019-01-22")
+
+-- insert into departments(DepartmentID, DepartmentName, Duty, Budget, StartDate, ManagerID)
+-- values("urts3442", "Writing", "Typing", "3980.00", "2020-01-30", 998); 
+
+-- select * from departments
+
+-- alter table departments
+-- add column ManagerID int;
+
+-- alter table departments
+-- add constraint fk_department_manager
+-- foreign key (ManagerID) references employees(EmployeeID);
+
+-- select * from departments
+-- select * from employees
+
+-- alter table departments
+-- drop column ManagerID;
+-- ALTER TABLE departments DROP FOREIGN KEY FK_Manager_Employee;
+
+
+
+-- ALTER TABLE departments
+-- ADD COLUMN CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+-- ADD COLUMN UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+
+
+-- ALTER TABLE employees
+-- ADD COLUMN DepartmentID int;
+
+-- ALTER TABLE employees
+-- ADD CONSTRAINT fk_employee_department
+-- FOREIGN KEY (DepartmentID) REFERENCES departments(DepartmentID)
+
+
+CREATE TABLE tasks (
+	TaskID INT AUTO_INCREMENT,
+    TaskName VARCHAR(50),
+    TaskDescription LONGTEXT,
+    StartDate DATE,
+    EndDate date,
+    TaskStatus varchar(20),
+    Priority varchar(20),
+    primary key (TaskID)
+);
+
+DELIMITER $$
+CREATE TRIGGER check_task_status BEFORE INSERT ON tasks
+FOR EACH ROW
+	BEGIN
+		IF NEW.TaskStatus <> 'In progress' AND NEW.TaskStatus <> 'Completed' AND NEW.TaskStatus <> 'Pending' THEN
+			SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'TaskStatues must be "In progress", "Completed", or "Pending"';
+        END IF;
+    END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER check_priority BEFORE INSERT ON tasks
+FOR EACH ROW
+	BEGIN
+		IF NEW.Priority <> 'High' AND NEW.Priority <> 'Medium' AND NEW.Priority <> 'Low' THEN
+			SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Priority must be "High", "Medium", or "Low"';
+		END IF;
+    END $$
+DELIMITER ;
+
+
+-- ALTER TABLE tasks
+-- ADD EmployeeID INT,
+-- ADD FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID);
+
+
+CREATE TABLE payment_methods (
+	PaymentMethodID INT,
+    PaymentType VARCHAR(30),
+    IsCreditCard BOOLEAN NOT NULL,
+    CardType VARCHAR(20) DEFAULT NULL,
+    ExpirationDate DATE DEFAULT NULL,
+    BillingAddress VARCHAR(20)
+);
+
+DELIMITER $$
+CREATE TRIGGER check_credit_card before insert on payment_methods
+FOR EACH ROW
+	BEGIN
+		IF NEW.IsCreditCard = TRUE THEN
+			IF NEW.CardType IS NULL OR NEW.ExpirationDate IS NULL THEN
+				SIGNAL SQLSTATE '45000'
+					SET MESSAGE_TEXT = 'Error: CardType and ExpirationDate cannot be NULL when IsCreditCard is TRUE';
+			END IF;
+		END IF;
+	END $$
+DELIMITER ;
+
+
+/*
+ALTER TABLE orders
+ADD COLUMN PaymentMethodID INT;
+
+ALTER TABLE orders
+ADD FOREIGN KEY (PaymentMethodID) REFERENCES payment_methods(PaymentMethodID);
+*/
+
+
+/*
+DELIMITER $$
+CREATE TRIGGER check_insert_depatment BEFORE INSERT ON departments
+FOR EACH ROW
+	BEGIN
+		IF NEW.Budget > 1000000 THEN
+			SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Cannot insert! Budget greater than one million';
+		END IF;
+        IF length(NEW.DepartmentID) != 8 THEN
+			SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Cannot insert! DepartmentID is not exactly eight characters long';
+		END IF;
+    END $$
+*/
+
+
+/*
+DELIMITER $$
+CREATE TRIGGER check_tasks_insert BEFORE INSERT ON tasks
+FOR EACH ROW
+	BEGIN
+		IF NEW.EndDate < CURRENT_DATE THEN
+			SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Cannot insert! EndDate is int the past';
+		END IF;
+        IF NOT (NEW.Priority <> 'Low' AND NEW.Priority <> 'Medium' AND NEW.Priority <> 'High') THEN
+			SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = 'Cannot insert! Priority must be one of the following: Low, Medium, High';
+		END IF;
+    END $$
+*/
+
+-- --------------------------------exercise 5
+INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
+VALUES ('AAAA0001', 'North', 'Accounting', 200000, '2018-02-02', 'William Brown', CURRENT_DATE());
+
+INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
+VALUES ('AABB0002', 'South', 'Marketing', 400000, '2018-02-22', 'Steven Buchanan', CURRENT_DATE());
+
+INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
+VALUES ('AACC0003', 'West', 'Management', 800000, '2018-01-12', 'Janet Leverling', CURRENT_DATE());
+
+
+insert into tasks (TaskName, TaskDescription, StartDate, EndDate, TaskStatus, Priority, Employee)
+values
+('Financial Report Analysis', 'Analyze and prepare financial reports for Q1', '2024-02-01', '2024-05-15', 'In Progress', 'High', 'John Smith'),
+('Social Media Campaign', 'Plan and execute a social media marketing campaign', '2024-02-10', '2024-06-28', 'Pending', 'Medium', 'Michael Suyama'),
+('Strategic Planning', 'Develop a strategic plan for the upcoming quarter', '2024-06-01', '2024-07-20', 'Not Started', 'High', 'Anna Davis');
+
+
+
+ALTER TABLE tasks
+ADD COLUMN EmployeeName VARCHAR(25);
+
+INSERT INTO tasks(EmployeeID, EmployeeName)
+VALUES
+(1, 'John Smith'),
+(2, 'Micheal Suyama'),
+(3, 'Anna Davis');
+
+INSERT INTO tasks (TaskName, TaskDescription, StartDate, EndDate, TaskStatus, Priority, EmployeeID)
+VALUES
+('Financial Report Analysis', 'Analyze and prepare financial reports for Q1', '2024-02-01', '2024-05-15', 'In Progress', 'High', 1),
+('Social Media Campaign', 'Plan and execute a social media marketing campaign', '2024-02-10', '2024-06-28', 'Pending', 'Medium', 2),
+('Strategic Planning', 'Develop a strategic plan for the upcoming quarter', '2024-06-01', '2024-07-20', 'Not Started', 'High', 3);
+
+
+/*
+insert into payment_methods(PaymentType, IsCreditCard, CardType, ExpirationDate, BillingAddress)
+values
+('Credit card', 'Yes', 'Visa', '2024-12-31', '123 Main St Cityville'),
+('PayPal', 'No', NULL, NULL, '202 Elm St Countryside'),
+('Debit card', 'Yes', 'MasterCard', '2025-10-10', '789 Pine St Villagetown');
+*/
+
+
+/*
+update employees
+set DepartmentID = 'AABB0002'
+where (LastName, FirstName) in (('Dodsworth', 'Anne'), ('Johnson','Emily'), ('Fuller','Andrew'));
+*/
+
+
+-- select * from orders
+-- select * from customers
+
+
+/*
+update orders
+set IsCreditCard = 'Yes', BillingAddress = '123 Main St Cityville'
+where CustomerID = 10;
+*/
+
+
+/*
+UPDATE tasks
+SET TaskStatus = 'In progress', StartDate = CURDATE()
+WHERE TaskName = 'Strategic Planning' AND EmployeeID = 3;
+*/
+
+
+/*
+UPDATE departments
+SET Budget = Budget * 2
+WHERE Duty = 'Marketing';
+*/
+
+-- CREATE TABLE orders_backup AS SELECT * FROM orders
+
+-- INSERT INTO orders_backup
+-- SELECT * FROM orders
+-- WHERE OrderDate >= '2023-08-18';
+
+-- select * from orders
+
+-- select * from shippers
+
+/*
+DELETE FROM orders_backup
+WHERE EmployeeID IS NULL AND ShipperID IN (
+	SELECT ShipperID FROM shippers
+    WHERE ShipperName IN ('Swift Shipping', 'Speedy Express')
+);
+*/
+
+-- select * from workout
+
+-- select count(*) as park_workouts
+-- from workout
+-- where description like '%park%';
+
+/*
+SELECT name.name, COUNT(workouts.workout_id) AS workout_count
+FROM fitness_app.workout
+JOIN users ON workout.user_id = .user_id
+GROUP BY name.name
+HAVING COUNT(workout.workout_id) >= 3;
+*/
+
+/*
+SELECT name as username, COUNT(workout_id) AS workout_count
+FROM workout
+GROUP BY name
+HAVING COUNT(workout_id) >= 3;
+*/
+
+-- select * from system_user
+
+/*
+SELECT su.username, COUNT(w.workout_id) AS workout_count
+FROM system_user su
+JOIN workout w ON su.user_id = w.user_id
+GROUP BY su.username
+HAVING COUNT(w.workout_id) >= 3;
+*/
+
+/*
+SELECT system_user.username, COUNT(workout.workout_id) AS workout_count
+FROM system_user
+JOIN workout ON system_user.user_id = workout.user_id
+GROUP BY system_user.username
+HAVING COUNT(workout.workout_id) >= 3;
+*/
+
+/*
+SELECT system_user.username, AVG(workout.calories_burned) AS burned_average_calories
+FROM system_user
+JOIN workout ON system_user.user_id = workout.user_id
+JOIN exercise ON workout.exercise_id = exercise.exercise_id
+GROUP BY system_user.username;
+*/
+
+/*
+SELECT system_user.username, AVG(workout.calories_burned) AS average_calories_burned
+FROM workout
+JOIN exercise ON workout.exercise_id = exercise.exercise_id
+JOIN system_user ON workout.user_id = system_user.user_id
+WHERE exercise.category = 'Cardio'
+GROUP BY system_user.username;
+*/
+
+-- select * from achievement
+
+/*
+SELECT system_user.username, system_user.email
+FROM system_user
+JOIN achievement ON system_user.user_id = achievement.user_id
+WHERE achievement.achievement_type = 'First 5K Run'
+*/
+
+/*
+SELECT exercise.category, COUNT(workout.exercise_id) AS logged_count
+FROM workout
+JOIN exercise ON workout.exercise_id = exercise.exercise_id
+GROUP BY exercise.category
+ORDER BY logged_count DESC
+LIMIT 3;
+*/
+
+/*
+SELECT goal.goal_type, COUNT(*) AS count
+FROM goal
+JOIN achievement ON goal.user_id = achievement.user_id
+WHERE achievement.achievement_type = '10 Workouts Streak'
+GROUP BY goal.goal_type
+ORDER BY count DESC
+LIMIT 1;
+*/
+
+SELECT system_user.*
+FROM system_user
+LEFT JOIN workout ON system_user.user_id = workout.user_id
+JOIN goal ON system_user.user_id = goal.user_id
+WHERE workout.workout_id IS NULL AND goal.goal_type = 'Muscle Gain'
+
+
+-----STARTED-----------
+
+
 -- select * from shop.customers; 
 
 -- select * from shop.customers
@@ -658,512 +1148,3 @@
 -- WHERE p.Unit LIKE '%boxes%'
 -- GROUP BY s.SupplierID, s.SupplierName
 -- HAVING COUNT(p.ProductID) >= 5;
-
-
-
--- sql basics 4---------------------------------------
-
--- create database school
-
-/*
-create table student(
-	studentID int not null auto_increment,
-    firstName varchar(40) not null,
-    lastName varchar(60) not null,
-    address varchar(40) not null,
-    phone varchar(15),
-    email varchar(50),
-    primary key(studentID)
-);
-
-create table participation(
-	participationID int not null auto_increment,
-    studentID int not null,
-    dateOfParticipation date not null,
-    primary key(participationID),
-    foreign key(studentID) references student(studentID)
-);
-*/
-
-/*
-CREATE TABLE departments (
-    DepartmentID VARCHAR(8) NOT NULL,
-    DepartmentName VARCHAR(50) NOT NULL,
-    Duty VARCHAR(50) NOT NULL,
-    Budget DECIMAL(10, 2) NOT NULL,
-    StartDate DATE NOT NULL,
-    primary key (DepartmentID)
-);
-DELIMITER $$
-CREATE TRIGGER validateDepartmentID
-BEFORE INSERT ON departments
-FOR EACH ROW
-BEGIN
-    IF NEW.DepartmentID NOT REGEXP '^[A-Z]{4}[0-9]{4}$' THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'DepartmentID format wrong';
-    END IF;
-END $$
-DELIMITER ;
-*/
-
-
--- alter table departments
--- add column ManagerID int;
-
-/*
-create table employees (
-	EmployeeID int,
-    FirstName varchar(50) not null,
-    LastName varchar(50) not null,
-    DepartmentID varchar(8),
-    primary key (EmployeeID),
-    foreign key (DepartmentID) references departments(DepartmentID)
-);
-*/
-
--- alter table departments
--- add constraint fk_manager_employee
--- foreign key (ManagerID) references employees(EmployeeID);
-
-/*
-create table tasks (
-	TaskID int auto_increment,
-    TaskName varchar(50),
-    TaskDescription text,
-    StartDate date,
-    EndDatae date,
-    TaskStatus varchar(20),
-    Priority varchar(10),
-    primary key (TaskID)
-);
-
-DELIMITER $$
-create trigger check_status before insert on tasks
-for each row
-begin
-	if new.TaskStatus not in ('In progress', 'Completed', 'Pending') then
-		signal sqlstate '45000' set message_text = 'Invalid task status';
-	end if;
-end $$
-DELIMITER $$
-
-DELIMITER $$
-create trigger check_priority before insert on tasks
-for each row
-begin
-	if new.Priority not in ('High', 'Medium', 'Low') then
-		signal sqlstate '45000' set message_text = 'Invalid priority';
-	end if;
-end $$
-DELIMITER $$;
-*/
- 
- 
--- create database school
-
-/*
-create table student(
-	StudentID int not null auto_increment,
-    FirstName varchar(40) not null,
-    LastName varchar(60) not null,
-    Address varchar(40) not null,
-    phone varchar(15),
-    email varchar(50),
-    primary key (StudentID)
-);
-
-create table participation(
-	ParticipationID int not null auto_increment,
-    StudentID int not null,
-    DateOfParticipation date not null,
-    primary key (ParticipationID),
-    foreign key (StudentID) references student(StudentID)
-);
-*/
-
-
--- add column
--- alter table participation
--- add column EnrollInformation longtext;
-
--- alter table student
--- modify column email varchar(60);
-
--- check table
--- describe participation;
-
-
-/*
-alter table student
-add column score int;
-DELIMITER $$
-create trigger check_score before insert on student
-for each row
-	begin
-		if NEW.score < 10 then 
-			signal sqlstate "45000"
-            set message_text = "Score too low";
-		end if;
-	end $$
-*/
-
-
--- now insert and check validation
--- insert into student(FirstName, LastName, Address, phone, email, score)
--- values("John", "Smith", "NYC, USA", "+8946382", "johns@email.com", 10);
-
--- now check table
--- select * from student
-
-/*
-create table departments(
-	DepartmentID varchar(8) not null,
-    DepartmentName varchar(40) not null,
-    Duty varchar(60) not null,
-    Budget decimal(8, 2),
-    StartDate date not null,
-    primary key (DepartmentID)
-);
-
-DELIMITER $$
-create trigger check_departmentID before insert on departments
-for each row
-	begin
-		if new.DepartmentID not regexp '^[A-Z]{4}[0-9]{4}$' then
-        signal sqlstate "45000"
-			set message_text = "DepartmentID must be four letters followed by four numbers!";
-		end if;
-    end $$
-
-insert into departments(DepartmentID, DepartmentName, Duty, Budget, StartDate)
-values("aabd789", "Information Technology", "Data Entry", "8700.00", "2019-01-22")
-*/
--- insert into departments(DepartmentID, DepartmentName, Duty, Budget, StartDate, ManagerID)
--- values("urts3442", "Writing", "Typing", "3980.00", "2020-01-30", 998); 
-
--- select * from departments
-
--- alter table departments
--- add column ManagerID int;
-
--- alter table departments
--- add constraint fk_department_manager
--- foreign key (ManagerID) references employees(EmployeeID);
-
--- select * from departments
--- select * from employees
-
--- alter table departments
--- drop column ManagerID;
--- ALTER TABLE departments DROP FOREIGN KEY FK_Manager_Employee;
-
-
-
--- ALTER TABLE departments
--- ADD COLUMN CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
--- ADD COLUMN UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
-
-
-
--- ALTER TABLE employees
--- ADD COLUMN DepartmentID int;
-
--- ALTER TABLE employees
--- ADD CONSTRAINT fk_employee_department
--- FOREIGN KEY (DepartmentID) REFERENCES departments(DepartmentID)
-
-/*
-CREATE TABLE tasks (
-	TaskID INT AUTO_INCREMENT,
-    TaskName VARCHAR(50),
-    TaskDescription LONGTEXT,
-    StartDate DATE,
-    EndDate date,
-    TaskStatus varchar(20),
-    Priority varchar(20),
-    primary key (TaskID)
-);
-
-DELIMITER $$
-CREATE TRIGGER check_task_status BEFORE INSERT ON tasks
-FOR EACH ROW
-	BEGIN
-		IF NEW.TaskStatus <> 'In progress' AND NEW.TaskStatus <> 'Completed' AND NEW.TaskStatus <> 'Pending' THEN
-			SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'TaskStatues must be "In progress", "Completed", or "Pending"';
-        END IF;
-    END $$
-DELIMITER ;
-
-DELIMITER $$
-CREATE TRIGGER check_priority BEFORE INSERT ON tasks
-FOR EACH ROW
-	BEGIN
-		IF NEW.Priority <> 'High' AND NEW.Priority <> 'Medium' AND NEW.Priority <> 'Low' THEN
-			SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Priority must be "High", "Medium", or "Low"';
-		END IF;
-    END $$
-DELIMITER ;
-*/
-
-
--- ALTER TABLE tasks
--- ADD EmployeeID INT,
--- ADD FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID);
-
-
-/*
-CREATE TABLE payment_methods (
-	PaymentMethodID INT,
-    PaymentType VARCHAR(30),
-    IsCreditCard BOOLEAN NOT NULL,
-    CardType VARCHAR(20) DEFAULT NULL,
-    ExpirationDate DATE DEFAULT NULL,
-    BillingAddress VARCHAR(20)
-);
-
-DELIMITER $$
-CREATE TRIGGER check_credit_card before insert on payment_methods
-FOR EACH ROW
-	BEGIN
-		IF NEW.IsCreditCard = TRUE THEN
-			IF NEW.CardType IS NULL OR NEW.ExpirationDate IS NULL THEN
-				SIGNAL SQLSTATE '45000'
-					SET MESSAGE_TEXT = 'Error: CardType and ExpirationDate cannot be NULL when IsCreditCard is TRUE';
-			END IF;
-		END IF;
-	END $$
-DELIMITER ;
-*/
-
-
-/*
-ALTER TABLE orders
-ADD COLUMN PaymentMethodID INT;
-
-ALTER TABLE orders
-ADD FOREIGN KEY (PaymentMethodID) REFERENCES payment_methods(PaymentMethodID);
-*/
-
-
-/*
-DELIMITER $$
-CREATE TRIGGER check_insert_depatment BEFORE INSERT ON departments
-FOR EACH ROW
-	BEGIN
-		IF NEW.Budget > 1000000 THEN
-			SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Cannot insert! Budget greater than one million';
-		END IF;
-        IF length(NEW.DepartmentID) != 8 THEN
-			SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Cannot insert! DepartmentID is not exactly eight characters long';
-		END IF;
-    END $$
-*/
-
-
-/*
-DELIMITER $$
-CREATE TRIGGER check_tasks_insert BEFORE INSERT ON tasks
-FOR EACH ROW
-	BEGIN
-		IF NEW.EndDate < CURRENT_DATE THEN
-			SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Cannot insert! EndDate is int the past';
-		END IF;
-        IF NOT (NEW.Priority <> 'Low' AND NEW.Priority <> 'Medium' AND NEW.Priority <> 'High') THEN
-			SIGNAL SQLSTATE '45000'
-				SET MESSAGE_TEXT = 'Cannot insert! Priority must be one of the following: Low, Medium, High';
-		END IF;
-    END $$
-*/
-
--- --------------------------------exercise 5
-/*
-INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
-VALUES ('AAAA0001', 'North', 'Accounting', 200000, '2018-02-02', 'William Brown', CURRENT_DATE());
-
-INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
-VALUES ('AABB0002', 'South', 'Marketing', 400000, '2018-02-22', 'Steven Buchanan', CURRENT_DATE());
-
-INSERT INTO departments (DepartmentID, DepartmentName, Duty, Budget, StartDate, Manager, CreatedAt)
-VALUES ('AACC0003', 'West', 'Management', 800000, '2018-01-12', 'Janet Leverling', CURRENT_DATE());
-*/
-
-
-/*
-insert into tasks (TaskName, TaskDescription, StartDate, EndDate, TaskStatus, Priority, Employee)
-values
-('Financial Report Analysis', 'Analyze and prepare financial reports for Q1', '2024-02-01', '2024-05-15', 'In Progress', 'High', 'John Smith'),
-('Social Media Campaign', 'Plan and execute a social media marketing campaign', '2024-02-10', '2024-06-28', 'Pending', 'Medium', 'Michael Suyama'),
-('Strategic Planning', 'Develop a strategic plan for the upcoming quarter', '2024-06-01', '2024-07-20', 'Not Started', 'High', 'Anna Davis');
-*/
-
-
-/*
-ALTER TABLE tasks
-ADD COLUMN EmployeeName VARCHAR(25);
-
-INSERT INTO tasks(EmployeeID, EmployeeName)
-VALUES
-(1, 'John Smith'),
-(2, 'Micheal Suyama'),
-(3, 'Anna Davis');
-
-INSERT INTO tasks (TaskName, TaskDescription, StartDate, EndDate, TaskStatus, Priority, EmployeeID)
-VALUES
-('Financial Report Analysis', 'Analyze and prepare financial reports for Q1', '2024-02-01', '2024-05-15', 'In Progress', 'High', 1),
-('Social Media Campaign', 'Plan and execute a social media marketing campaign', '2024-02-10', '2024-06-28', 'Pending', 'Medium', 2),
-('Strategic Planning', 'Develop a strategic plan for the upcoming quarter', '2024-06-01', '2024-07-20', 'Not Started', 'High', 3);
-*/
-
-
-/*
-insert into payment_methods(PaymentType, IsCreditCard, CardType, ExpirationDate, BillingAddress)
-values
-('Credit card', 'Yes', 'Visa', '2024-12-31', '123 Main St Cityville'),
-('PayPal', 'No', NULL, NULL, '202 Elm St Countryside'),
-('Debit card', 'Yes', 'MasterCard', '2025-10-10', '789 Pine St Villagetown');
-*/
-
-
-/*
-update employees
-set DepartmentID = 'AABB0002'
-where (LastName, FirstName) in (('Dodsworth', 'Anne'), ('Johnson','Emily'), ('Fuller','Andrew'));
-*/
-
-
--- select * from orders
--- select * from customers
-
-
-/*
-update orders
-set IsCreditCard = 'Yes', BillingAddress = '123 Main St Cityville'
-where CustomerID = 10;
-*/
-
-
-/*
-UPDATE tasks
-SET TaskStatus = 'In progress', StartDate = CURDATE()
-WHERE TaskName = 'Strategic Planning' AND EmployeeID = 3;
-*/
-
-
-/*
-UPDATE departments
-SET Budget = Budget * 2
-WHERE Duty = 'Marketing';
-*/
-
--- CREATE TABLE orders_backup AS SELECT * FROM orders
-
--- INSERT INTO orders_backup
--- SELECT * FROM orders
--- WHERE OrderDate >= '2023-08-18';
-
--- select * from orders
-
--- select * from shippers
-
-/*
-DELETE FROM orders_backup
-WHERE EmployeeID IS NULL AND ShipperID IN (
-	SELECT ShipperID FROM shippers
-    WHERE ShipperName IN ('Swift Shipping', 'Speedy Express')
-);
-*/
-
--- select * from workout
-
--- select count(*) as park_workouts
--- from workout
--- where description like '%park%';
-
-/*
-SELECT name.name, COUNT(workouts.workout_id) AS workout_count
-FROM fitness_app.workout
-JOIN users ON workout.user_id = .user_id
-GROUP BY name.name
-HAVING COUNT(workout.workout_id) >= 3;
-*/
-
-/*
-SELECT name as username, COUNT(workout_id) AS workout_count
-FROM workout
-GROUP BY name
-HAVING COUNT(workout_id) >= 3;
-*/
-
--- select * from system_user
-
-/*
-SELECT su.username, COUNT(w.workout_id) AS workout_count
-FROM system_user su
-JOIN workout w ON su.user_id = w.user_id
-GROUP BY su.username
-HAVING COUNT(w.workout_id) >= 3;
-*/
-
-/*
-SELECT system_user.username, COUNT(workout.workout_id) AS workout_count
-FROM system_user
-JOIN workout ON system_user.user_id = workout.user_id
-GROUP BY system_user.username
-HAVING COUNT(workout.workout_id) >= 3;
-*/
-
-/*
-SELECT system_user.username, AVG(workout.calories_burned) AS burned_average_calories
-FROM system_user
-JOIN workout ON system_user.user_id = workout.user_id
-JOIN exercise ON workout.exercise_id = exercise.exercise_id
-GROUP BY system_user.username;
-*/
-
-/*
-SELECT system_user.username, AVG(workout.calories_burned) AS average_calories_burned
-FROM workout
-JOIN exercise ON workout.exercise_id = exercise.exercise_id
-JOIN system_user ON workout.user_id = system_user.user_id
-WHERE exercise.category = 'Cardio'
-GROUP BY system_user.username;
-*/
-
--- select * from achievement
-
-/*
-SELECT system_user.username, system_user.email
-FROM system_user
-JOIN achievement ON system_user.user_id = achievement.user_id
-WHERE achievement.achievement_type = 'First 5K Run'
-*/
-
-/*
-SELECT exercise.category, COUNT(workout.exercise_id) AS logged_count
-FROM workout
-JOIN exercise ON workout.exercise_id = exercise.exercise_id
-GROUP BY exercise.category
-ORDER BY logged_count DESC
-LIMIT 3;
-*/
-
-/*
-SELECT goal.goal_type, COUNT(*) AS count
-FROM goal
-JOIN achievement ON goal.user_id = achievement.user_id
-WHERE achievement.achievement_type = '10 Workouts Streak'
-GROUP BY goal.goal_type
-ORDER BY count DESC
-LIMIT 1;
-*/
-
-SELECT system_user.*
-FROM system_user
-LEFT JOIN workout ON system_user.user_id = workout.user_id
-JOIN goal ON system_user.user_id = goal.user_id
-WHERE workout.workout_id IS NULL AND goal.goal_type = 'Muscle Gain'
